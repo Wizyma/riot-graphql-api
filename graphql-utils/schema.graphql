@@ -1,0 +1,102 @@
+interface Sum {
+    matches: [Matches!]!
+    accountId: ID!
+}
+
+type Summoner {
+    profileIconId: ID!
+    name: String!
+    summonerLevel: Int!
+    accountId: ID! 
+    id: ID! 
+    revisionDate: Int!
+    spectator: Spectator
+    matches(limit: Int): [Matches]
+}
+
+# get all user Matches
+type Matches {
+    lane: String!
+    gameId: ID!
+    champion: Int!
+    platformId: ID!
+    timestamp: Int!
+    queue: Int!
+    role: String!
+    season: Int!
+    match(id: Int!): Match! 
+}
+
+# get a single match that match the given match ID
+type Match {
+   seasonId: ID! 
+   queueId:ID!
+   gameId: ID!
+   participantIdentities: [ParticipantIdentities!]!
+   gameVersion: String!
+   platformId: ID!
+   gameMode: String!
+   mapId: Int!
+   gameType: String!
+   teams: [Teams!]!
+   participants: [Participants!]!
+   gameDuration: Int!
+   gameCreation: Int!
+}
+
+type ParticipantIdentities {
+    player: Player!
+    participantId: ID!
+}
+
+type Player implements Sum {
+    currentPlatformId: ID!
+    summonerName: String!
+    platformId: ID!
+    matches: [Matches!]!
+    currentAccountId: Int!
+    profileIcon: Int!
+    summonerId: ID!
+    accountId: ID!
+}
+
+type Participants {
+    h: String
+}
+
+type Teams {
+    firstDragon: Boolean!
+    bans: [Bans]
+    firstInhibitor: Boolean!
+    win: String !
+    firstRiftHerald: Boolean!
+    firstBaron: Boolean!
+    baronKills: Int!
+    riftHeraldKills: Int!
+    firstBlood: Boolean!
+    teamId: Int!
+    firstTower: Boolean!
+    vilemawKills: Int!
+    inhibitorKills: Int!
+    towerKills: Int!
+    dominionVictoryScore: Int!
+    dragonKills: Int! 
+}
+
+type Bans {
+    pickTurn: Int!
+    championId: ID!
+}
+
+type Spectator {
+    gameId: Int! @default(value: "Not Fount, the player maybe not spectating right now !")
+    gameStartTime: Int! @default(value: "Not Fount, the player maybe not spectating right now !")
+    platformId: String! @default(value: "Not Fount, the player maybe not spectating right now !")
+    gameMode: String! @default(value: "Not Fount, the player maybe not spectating right now !")
+    mapId: Int! @default(value: "Not Fount, the player maybe not spectating right now !")
+    gameType: String! @default(value: "Not Fount, the player maybe not spectating right now !")
+}
+
+type Query {
+    summoner(name: String!): Summoner!
+}
