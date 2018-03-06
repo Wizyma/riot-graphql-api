@@ -1,3 +1,3 @@
-# riot-graphql-
+# riot-graphql-api
 
 Unofficial Riot API with GraphQL
