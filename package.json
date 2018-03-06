@@ -1,0 +1,28 @@
+{
+  "name": "riot-gql-api",
+  "version": "0.0.1",
+  "description": "riot api using graphql",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon --exec nodejs-dashboard babel-node -- server.js"
+  },
+  "keywords": [
+    "GraphQL",
+    "NodeJs",
+    "JavaScript"
+  ],
+  "author": "André Gomes",
+  "license": "MIT",
+  "ENV": "DEV",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "graphql-yoga": "^1.4.3",
+    "node-fetch": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodejs-dashboard": "^0.4.3"
+  }
+}
