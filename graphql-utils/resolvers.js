@@ -1,10 +1,20 @@
 import fetch from 'node-fetch'
+import { json } from 'body-parser';
 
 const resolvers = {
     Query: {
         summoner: async (_, { name }, ctx) => {
-            const sums = await fetch(`https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${name}?${ctx.key}`)
-            return await sums.json()
+            const res = await fetch(`https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${name}?${ctx.key}`)
+            const summoner = await res.json()
+            if(ctx.request.body.query.match('matches')){
+                // TODO: implement all matches and match search
+                const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matchlists/by-account/${summoner.accountId}/recent?${ctx.key}`)
+                const matches = await res.json()
+
+                Object.assign(summoner, { matches })
+                return summoner
+            }
+            return summoner
         },
         match: async (_, { game_id }, ctx) => {
             const match = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${game_id}?${ctx.key}`)

@@ -5,9 +5,10 @@ import { resolvers, typeDefs } from './graphql-utils'
 const server = new GraphQLServer({
         typeDefs: typeDefs, 
         resolvers, 
-        context: {
+        context: req => ({
+            ...req,
             key: process.env.API_KEY
-        },
+        }),
 })
 
 const options = {
