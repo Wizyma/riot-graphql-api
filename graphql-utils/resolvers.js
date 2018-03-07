@@ -11,6 +11,11 @@ const resolvers = {
                 const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matchlists/by-account/${summoner.accountId}/recent?${ctx.key}`)
                 const matches = await res.json()
 
+                /* const match = await Promise.all(matches.matches.map(async elem => {
+                    const matchRes = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${elem.gameId}?${ctx.key}`)
+                    const m = await matchRes.json()
+                })) */
+
                 Object.assign(summoner, { matches })
                 return summoner
             }
