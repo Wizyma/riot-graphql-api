@@ -4,7 +4,9 @@
   "description": "riot api using graphql",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node -- server.js"
+    "dev": "nodemon --exec babel-node -- server.js",
+    "build": "babel server.js && babel graphql-utils -d dist/graphql-utils",
+    "start": "node dist/server.js"
   },
   "keywords": [
     "GraphQL",
@@ -23,6 +25,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "nodejs-dashboard": "^0.4.3"
   }
