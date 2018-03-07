@@ -7,7 +7,7 @@ type Summoner {
     id: ID! 
     revisionDate: Int!
     spectator: Spectator
-    matches(summoner_id: ID!, recent: Boolean!, limit: Int): Matches
+    matches(start: Int, end: Int): Matches
 }
 
 # get all user Matches
@@ -28,7 +28,7 @@ type Matchs {
     role: String!
     season: Int!
     # the id has to match the gameId
-    match(game_id: ID!): Match
+    match: Match!
 }
 
 # get a single match that match the given match ID
@@ -57,7 +57,7 @@ type Player {
     currentPlatformId: ID!
     summonerName: String!
     platformId: ID!
-    matches(summoner_id: ID!, recent: Boolean!, limit: Int): [Matches!]!
+    matches: [Matches!]!
     currentAccountId: Int!
     profileIcon: Int!
     summonerId: ID!
