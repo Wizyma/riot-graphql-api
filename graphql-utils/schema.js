@@ -7,7 +7,7 @@ type Summoner {
     id: ID! 
     revisionDate: Int!
     spectator: Spectator
-    matches(start: Int, end: Int): Matches
+    matches(start: Int end: Int): Matches
 }
 
 # get all user Matches
@@ -16,6 +16,101 @@ type Matches {
     startIndex: Int!
     endIndex: Int!
     totalGames: Int!
+}
+
+type Champions {
+    rankedPlayEnabled: Boolean!
+    botEnabled: Boolean!
+    botMmEnabled: Boolean!
+    active: Boolean!
+    freeToPlay: Boolean!
+    id: ID!
+    championsInfo: ChampionsInfo!
+}
+
+type ChampionsInfo {
+    info: ChampInfo!
+    enemytips: [String!]!
+    stats: ChampStats!
+    name: String!
+    title: String!
+    image: Image!
+    tags: [String!]!
+    partype: String!
+    skins: [ChampSkins!]!
+    passive: ChampPassive!
+    allytips: [String!]!
+    key: String!
+    lore: String!
+    id: ID!
+    blurb: String!
+    spells: ChampSpells!
+}
+
+type ChampSkins {
+    num: Int!
+    id: ID!
+    name: String!
+}
+
+type ChampSpells {
+    cooldownBurn: String!
+    key: String!
+    costType: String!
+    description: String!
+    sanitizedDescription: String!
+    sanitizedTooltip: String!
+    tooltip: String!
+    maxrank: Int!
+    image: Image!
+    name: String!
+}
+
+type ChampPassive {
+    image: Image!
+    sanitizedDescription: String!
+    name: String!
+    description: String!
+}
+
+type Image {
+    full: String!
+    group: String!
+    sprite: String!
+    h: Int!
+    w: Int!
+    y: Int!
+    x: Int!
+}
+
+type ChampStats {
+    armorperlevel: Int!
+    attackdamage: Int!
+    mpperlevel: Int!
+    attackspeedoffset: Int!
+    mp: Int!
+    armor: Int!
+    hp: Int!
+    hpregenperlevel: Int!
+    attackspeedperlevel: Int!
+    attackrange: Int!
+    movespeed: Int!
+    attackdamageperlevel: Int!
+    mpregenperlevel: Int!
+    critperlevel: Int!
+    spellblockperlevel: Int!
+    crit: Int!
+    mpregen: Int!
+    spellblock: Int!
+    hpregen: Int!
+    hpperlevel: Int!
+} 
+
+type ChampInfo {
+    difficulty: Int!
+    defense: Int!
+    magic: Int!
+    attack: Int!
 }
 
 type Matchs {
@@ -220,7 +315,7 @@ type Spectator {
 
 type Query {
     summoner(name: String!): Summoner!
-    matches(summoner_id: ID!, recent: Boolean!, start: Int, end: Int): Matches
+    matches(summoner_id: ID! recent: Boolean! start: Int end: Int): Matches
     match(game_id: ID!): Match!
 }
 `
