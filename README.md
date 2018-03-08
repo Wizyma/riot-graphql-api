@@ -17,6 +17,15 @@ How to use
 2. Click the "Fork" Button in the upper right hand corner of the interface
 3. clone the project you just forket
 
+#### Setup Your Upstream
+
+1. Change directory to the new riot-graphql-api directory (`cd riot-graphql-api`)
+2. Add a remote to the official riot-graphql-api repo:
+
+```shell
+$ git remote add upstream https://github.com/jsparanoguy/riot-graphql-api.git
+```
+
 ##### Rebasing from Upstream
 
 Do this prior to every time you create a branch for a PR:
