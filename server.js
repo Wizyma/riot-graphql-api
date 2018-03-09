@@ -1,6 +1,8 @@
 require('dotenv').config()
+import morgan from 'morgan'
 import { GraphQLServer } from 'graphql-yoga'
 import { resolvers, typeDefs } from './graphql-utils'
+import { getStaticFiles } from './helpers/utils'
 
 const server = new GraphQLServer({
         typeDefs: typeDefs, 
@@ -17,5 +19,6 @@ const options = {
     subscriptions: '/subscriptions',
     playground: '/playground',
 }
-  
-server.start(options, ({ port }) => console.log(`> Server started, listening on port ${port} for incoming requests.`))
+
+server.use(morgan("dev"))
+server.start(options, ({ port }) => console.log(`> Server started, listening on port ${port} for incoming requests.`) || getStaticFiles())

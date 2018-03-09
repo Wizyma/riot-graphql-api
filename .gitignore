@@ -63,3 +63,6 @@ typings/
 .history
 package-lock.json
 dist/
+static-data/
+debug.json
+graphql-utils/schema.graphql

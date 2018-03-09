@@ -116,7 +116,7 @@ type ChampInfo {
 type Matchs {
     lane: String!
     gameId: ID!
-    champion: Int!
+    champion: Champions!
     platformId: ID!
     timestamp: Int!
     queue: Int!
@@ -180,7 +180,7 @@ type Teams {
 
 type Bans {
     pickTurn: Int!
-    championId: ID!
+    champion: Champions!
 }
 
 type Participants {
@@ -191,7 +191,7 @@ type Participants {
     spell2Id: ID!
     teamId: ID!
     timeline: Timeline!
-    championId: ID!
+    champion: Champions!
 }
 
 type Timeline {
