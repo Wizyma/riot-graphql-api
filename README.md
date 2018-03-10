@@ -7,8 +7,8 @@ How to use
 2. create a .env file a the root
 3. add ```API_KEY = "api_key=YOUR_API_KEY"``` to your .env file
 4. Install nodemon globaly
-5. run a ```npm install``` in the project
-6. run ```npm run dev```
+5. ```npm install```
+6. ```npm run dev```
 
 ## CONTRIBUTING
 

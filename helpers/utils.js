@@ -80,6 +80,22 @@ function updateChampions() {
     
 }
 
+function getDynamicInfo() {
+    const data_path = path.join(process.cwd(), `/static-data`)
+
+    fs.stat(`${data_path}/champions/champions_dynamic_fr_FR.json`, async (err, stats) => {
+        if(err && err.errno === -2){
+            const res = await fetch(`https://euw1.api.riotgames.com/lol/platform/v3/champions?freeToPlay=false&${process.env.API_KEY}`)
+            const data = await res.json()
+
+            fs.writeFile(`${data_path}/champions/champions_dynamic_fr_FR.json`, JSON.stringify(data), (err) => {
+                if(err) throw err
+                console.log('> The updated champions info was wrote succesfully')
+            })
+        }
+    })
+}
+
 /**
  * Get the the static files from the riot api to avoid 
  * doing ton of request on they servers and to no have 
@@ -87,6 +103,7 @@ function updateChampions() {
  */
 function getStaticFiles() {
     checkFolderExists()
+    getDynamicInfo()
     updateChampions()
 
     folders.map(folder => {
