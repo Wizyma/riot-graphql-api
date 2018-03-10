@@ -1,11 +1,11 @@
 require('dotenv').config()
 import morgan from 'morgan'
 import { GraphQLServer } from 'graphql-yoga'
-import { resolvers, typeDefs } from './graphql-utils'
+import { resolvers } from './graphql-utils'
 import { getStaticFiles } from './helpers/utils'
 
 const server = new GraphQLServer({
-        typeDefs: typeDefs, 
+        typeDefs: './graphql-utils/schema.graphql', 
         resolvers, 
         context: req => ({
             ...req,
