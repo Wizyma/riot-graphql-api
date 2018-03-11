@@ -71,6 +71,8 @@ function updateChampions() {
 
         const res = await fetch(`https://euw1.api.riotgames.com/lol/platform/v3/champions?freeToPlay=false&${process.env.API_KEY}`)
         const data = await res.json()
+        // handle error and do not write to file
+        if(res.status !== 200) throw new Error(JSON.stringify({ message: data.status.message, more: 'The dynamic info couldnt be updated' }))
 
         fs.writeFile(`${data_path}/champions/champions_dynamic_fr_FR.json`, JSON.stringify(data), (err) => {
             if(err) throw err
@@ -87,6 +89,8 @@ function getDynamicInfo() {
         if(err && err.errno === -2){
             const res = await fetch(`https://euw1.api.riotgames.com/lol/platform/v3/champions?freeToPlay=false&${process.env.API_KEY}`)
             const data = await res.json()
+            // handle error and do not write to file
+            if(res.status !== 200) throw new Error(JSON.stringify({ message: data.status.message, more: 'The dynamic info couldnt be updated' }))
 
             fs.writeFile(`${data_path}/champions/champions_dynamic_fr_FR.json`, JSON.stringify(data), (err) => {
                 if(err) throw err
@@ -100,6 +104,7 @@ function getDynamicInfo() {
  * Get the the static files from the riot api to avoid 
  * doing ton of request on they servers and to no have 
  * the limit rate error because of request spam
+ * TODO: Unhandled promise rejection with async / await 
  */
 function getStaticFiles() {
     checkFolderExists()
@@ -117,9 +122,11 @@ function getStaticFiles() {
             if(err && err.errno !== -2) throw err
             if (!data) {
                 const res = await fetch(url)
-                const data = await res.json()
-            
-                fs.writeFile(`${data_path}/${folder}_fr_FR.json`, JSON.stringify(data), (err) => {
+                const riotData = await res.json()
+                // handle error and do not write to file
+                if(res.status !== 200) throw new Error(riotData.status.message)
+
+                fs.writeFile(`${data_path}/${folder}_fr_FR.json`, JSON.stringify(riotData), (err) => {
                     if(err) throw err
                     console.log('> file registered')
                 })

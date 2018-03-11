@@ -10,8 +10,12 @@ const resolvers = {
             
             if(ctx.request.body.query.match('matches')){
                 // TODO: implement all matches and match search
-                const champions = Object.assign({}, require('../static-data/champions/champions_fr_FR.json'))
-                const dynamicChampionsInfo = Object.assign({}, require('../static-data/champions/champions_dynamic_fr_FR.json'))
+                const paths = {
+                    champions: path.resolve(path.join(process.cwd(), '../static-data/champions/champions_fr_FR.json')),
+                    dynamic: path.resolve(path.join(process.cwd(), '../static-data/champions/champions_dynamic_fr_FR.json')),
+                }
+                const champions = Object.assign({}, require(paths.champions))
+                const dynamicChampionsInfo = Object.assign({}, require(paths.dynamic))
 
                 const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matchlists/by-account/${summoner.accountId}?beginIndex=0&endIndex=1&${ctx.key}`)
                 const matches = await res.json()
