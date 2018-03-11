@@ -1,0 +1,9 @@
+# import Summoner from './summoner.graphql'
+# import Matches from './matches.graphql'
+# import Match from './match.graphql'
+
+type Query {
+    summoner(name: String!): Summoner!
+    matches(summoner_id: ID! recent: Boolean! start: Int end: Int): Matches
+    match(game_id: ID!): Match!
+}

@@ -1,0 +1,13 @@
+# import Matches from "./matches.graphql"
+# import Spectator from './spectator.graphql'
+
+type Summoner {
+    profileIconId: ID!
+    name: String!
+    summonerLevel: Int!
+    accountId: ID! 
+    id: ID! 
+    revisionDate: Int!
+    spectator: Spectator
+    matches(start: Int end: Int): Matches
+}

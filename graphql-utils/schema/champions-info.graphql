@@ -1,0 +1,76 @@
+# import Image from './image.graphql'
+
+type ChampionsInfo {
+    info: ChampInfo!
+    enemytips: [String!]!
+    stats: ChampStats!
+    name: String!
+    title: String!
+    image: Image!
+    tags: [String!]!
+    partype: String!
+    skins: [ChampSkins!]!
+    passive: ChampPassive!
+    allytips: [String!]!
+    key: String!
+    lore: String!
+    id: ID!
+    blurb: String!
+    spells: ChampSpells!
+}
+
+type ChampSkins {
+    num: Int!
+    id: ID!
+    name: String!
+}
+
+type ChampSpells {
+    cooldownBurn: String!
+    key: String!
+    costType: String!
+    description: String!
+    sanitizedDescription: String!
+    sanitizedTooltip: String!
+    tooltip: String!
+    maxrank: Int!
+    image: Image!
+    name: String!
+}
+
+type ChampPassive {
+    image: Image!
+    sanitizedDescription: String!
+    name: String!
+    description: String!
+}
+
+type ChampStats {
+    armorperlevel: Int!
+    attackdamage: Int!
+    mpperlevel: Int!
+    attackspeedoffset: Int!
+    mp: Int!
+    armor: Int!
+    hp: Int!
+    hpregenperlevel: Int!
+    attackspeedperlevel: Int!
+    attackrange: Int!
+    movespeed: Int!
+    attackdamageperlevel: Int!
+    mpregenperlevel: Int!
+    critperlevel: Int!
+    spellblockperlevel: Int!
+    crit: Int!
+    mpregen: Int!
+    spellblock: Int!
+    hpregen: Int!
+    hpperlevel: Int!
+} 
+
+type ChampInfo {
+    difficulty: Int!
+    defense: Int!
+    magic: Int!
+    attack: Int!
+}

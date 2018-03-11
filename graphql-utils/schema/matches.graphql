@@ -1,0 +1,22 @@
+# import Champions from './champions.graphql'
+# import Match from './match.graphql'
+
+type Matches {
+    matches: [Matchs]
+    startIndex: Int!
+    endIndex: Int!
+    totalGames: Int!
+}
+
+type Matchs {
+    lane: String!
+    gameId: ID!
+    champion: Champions!
+    platformId: ID!
+    timestamp: Int!
+    queue: Int!
+    role: String!
+    season: Int!
+    # the id has to match the gameId
+    match: Match!
+}

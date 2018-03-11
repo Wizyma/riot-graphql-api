@@ -1,0 +1,8 @@
+type Spectator {
+    gameId: Int! 
+    gameStartTime: Int! 
+    platformId: String! 
+    gameMode: String! 
+    mapId: Int! 
+    gameType: String! 
+}

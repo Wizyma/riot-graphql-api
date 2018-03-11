@@ -1,0 +1,11 @@
+# import ChampionsInfo from './champions-info.graphql'
+
+type Champions {
+    rankedPlayEnabled: Boolean!
+    botEnabled: Boolean!
+    botMmEnabled: Boolean!
+    active: Boolean!
+    freeToPlay: Boolean!
+    id: ID!
+    championsInfo: ChampionsInfo!
+}

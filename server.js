@@ -5,7 +5,7 @@ import { resolvers } from './graphql-utils'
 import { getStaticFiles } from './helpers/utils'
 
 const server = new GraphQLServer({
-        typeDefs: './graphql-utils/schema.graphql', 
+        typeDefs: './graphql-utils/schema/schema.graphql', 
         resolvers, 
         context: req => ({
             ...req,
