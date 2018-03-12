@@ -64,7 +64,7 @@ async function checkFolderExists() {
  */
 function updateChampions() {
     const rule = new schedule.RecurrenceRule();
-    rule.dayOfWeek = 1
+    rule.hour = 6
     const job = schedule.scheduleJob(rule, async () => {
         console.log('> the update job started.')
         const data_path = path.join(process.cwd(), `/static-data`)
