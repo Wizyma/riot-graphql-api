@@ -1,4 +1,5 @@
 require('dotenv').config()
+
 import morgan from 'morgan'
 import { GraphQLServer } from 'graphql-yoga'
 import { resolvers } from './graphql-utils'
@@ -19,6 +20,9 @@ const options = {
     subscriptions: '/subscriptions',
     playground: '/playground',
 }
+if (process.env.DEV) {
+    require("nodejs-dashboard")
+    server.use(morgan('dev'))
+}
 
-server.use(morgan("dev"))
 server.start(options, ({ port }) => console.log(`> Server started, listening on port ${port} for incoming requests.`) || getStaticFiles())
