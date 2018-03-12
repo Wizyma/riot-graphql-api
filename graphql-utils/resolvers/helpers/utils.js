@@ -30,9 +30,9 @@ export function formatChampion(dynamic = false) {
  * @param {*} dynamicChamp 
  * @param {*} champions 
  * @param {Array} keys an array containing the name of all the champion 
- * @param {*} match Object containing info about the match
+ * @param {*} toAdd Object that champions will be add to
  */
-export function addInfoToChampion(dynamicChamp, champions, keys, match = null) {
+export function addInfoToChampion(dynamicChamp, champions, keys, toAdd = null) {
     dynamicChamp.champions.map(champ => {
         for (let i in champions.data) {
             keys.forEach(k => {
@@ -42,15 +42,22 @@ export function addInfoToChampion(dynamicChamp, champions, keys, match = null) {
             })
         }
 
-        if (match) {
-            addChampionToMatches(match, champ)
+        if (toAdd) {
+            addChampionToMatches(toAdd, champ)
         }
     })
 }
 
-export function addChampionToMatches(match, champ) {
-    if (champ.id === match.champion) {
-        match.champion = champ
+export function addChampionToMatches(toAdd, champ) {
+    if(toAdd.championId) {
+        if (champ.id === toAdd.championId) {
+            toAdd.champion = champ
+        }
+    }
+    if(toAdd.champion){
+        if (champ.id === toAdd.champion) {
+            toAdd.champion = champ
+        }
     }
 }
 

@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 import morgan from 'morgan'
 import { GraphQLServer } from 'graphql-yoga'
 import { resolvers } from './graphql-utils'

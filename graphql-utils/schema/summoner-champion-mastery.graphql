@@ -1,0 +1,13 @@
+# import Champions from './champions.graphql'
+
+type ChampionMastery {
+    championLevel: Int!
+    chestGranted: Boolean!
+    championPoints: Int!
+    championPointsSinceLastLevel: Int!
+    playerId: ID!
+    championPointsUntilNextLevel: Int!
+    tokensEarned: Int!
+    champion: Champions!
+    lastPlayTime: Int!
+}

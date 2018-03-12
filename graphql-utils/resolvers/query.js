@@ -8,6 +8,9 @@ const Query = {
         const res = await fetch(`https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${name}?${ctx.key}`)
         const summoner = await res.json()
         
+        const resChampionsMastery = await fetch(`https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summoner.id}?${ctx.key}`)
+        const championMastery = await resChampionsMastery.json()
+
         if(ctx.request.body.query.match('matches')){
             // TODO: implement all matches and match search
             const formatedChamp = formatChampion(false)
@@ -31,6 +34,18 @@ const Query = {
             summoner.matches = matches
         }
 
+        if (championMastery.length >= 1) {
+            const formatedChamp = formatChampion(false)
+            const dynamicChampionsInfo = formatChampion(true)
+            const { keys, champions } = formatedChamp
+
+            championMastery.map(champ => {
+                addInfoToChampion(dynamicChampionsInfo, champions, keys, champ)
+            })
+            
+            summoner.championMastery = championMastery
+        }
+
         // create a dump of the graphql request for mock_data utilities
         if(process.env.DEV && summoner) {
             fs.writeFile(`${process.cwd()}/debug.json`, JSON.stringify(summoner), (err) => {
@@ -43,15 +58,17 @@ const Query = {
     },
     match: async (_, { game_id }, ctx) => {
         const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${game_id}?${ctx.key}`)
+        if(res.status !== 200) throw new Error(res.statusText)
         const match = await res.json()
         const formatedChamp = formatChampion(false)
         const dynamicChampionsInfo = formatChampion(true)
         const { keys, champions } = formatedChamp
 
         addInfoToChampion(dynamicChampionsInfo, champions, keys)
-        addInfoChampionToMatchBans(match, dynamicChampionsInfo)
-        addInfoChampionToMathPlayers(match, dynamicChampionsInfo)
-
+        if(match.gameId){
+            addInfoChampionToMatchBans(match, dynamicChampionsInfo)
+            addInfoChampionToMathPlayers(match, dynamicChampionsInfo)
+        }
         return match
     },
     matches: async (_, { summoner_id, start, end, recent }, ctx) => {
@@ -79,7 +96,7 @@ const Query = {
 
                 elem.match = m
             }))
-            console.log(match)
+
             return matches
         }
 
