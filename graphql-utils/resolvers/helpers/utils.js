@@ -27,36 +27,61 @@ export function formatChampion(dynamic = false) {
 
 /**
  * * if match is provided, it will add the champion info to the match automatically
- * @param {*} dynamicChamp 
+ * @param {*} champions_info 
  * @param {*} champions 
  * @param {Array} keys an array containing the name of all the champion 
  * @param {*} toAdd Object that champions will be add to
  */
-export function addInfoToChampion(dynamicChamp, champions, keys, toAdd = null) {
-    dynamicChamp.champions.map(champ => {
+export function addInfoToChampion(champions_info, champions, keys, toAdd = null) {
+    const formated = champions_info.champions.map(champ => {
+        const to_return = []
+        const id_inserted = []
         for (let i in champions.data) {
-            keys.forEach(k => {
-                if(champions.data[k].id === champ.id){
-                    champ.championsInfo = champions.data[k]
+            keys.map((k, x) => {
+                if(champions.data[k].id === champ.id && !id_inserted.includes(champ.id)){
+                    to_return.push({
+                        ...champ,
+                        championsInfo: champions.data[k]
+                    })
+                    id_inserted.push(champ.id)
                 }
             })
         }
 
-        if (toAdd) {
-            addChampionToMatches(toAdd, champ)
-        }
+        return to_return[0]
     })
+
+    if (toAdd) {
+        const match_with_champ_info = formated.map(champ => {
+            return addChampionToMatches(toAdd, champ)
+        }).filter(match => match !== undefined)
+  
+        return {
+            formated,
+            match_with_champ_info
+        }
+    }
+
+    return {
+        formated
+    }
 }
 
 export function addChampionToMatches(toAdd, champ) {
     if(toAdd.championId) {
         if (champ.id === toAdd.championId) {
-            toAdd.champion = champ
+            return {
+                ...toAdd,
+                champion: champ
+            }
         }
     }
     if(toAdd.champion){
         if (champ.id === toAdd.champion) {
-            toAdd.champion = champ
+            return {
+                ...toAdd,
+                champion: champ
+            }
         }
     }
 }
@@ -67,17 +92,32 @@ export function addChampionToMatches(toAdd, champ) {
  * @param {Object} dynamicChamp Object containing an array of champion
  */
 export function addInfoChampionToMatchBans(match, dynamicChamp) {
-    match.teams.map(team => team.bans).map(bans => {
+    const match_with_bans = match.teams.map(team => {
+        const bans = team.bans
         if(bans.length >= 1){
-            bans.map(ban => {    
-                dynamicChamp.champions.map(champ => {
+            const bans_for_team = bans.map(ban => {    
+                return dynamicChamp.map(champ => {
                     if (ban.championId === champ.id) {
-                        ban.champion = champ
+                        return {
+                            ...ban,
+                            champion: champ
+                        }
                     }
-                })
-            })
+                }).filter(e => e !== undefined)
+            }).filter(e => {
+                if(e !== undefined){
+                    return e[0]
+                }
+            }).map(e => e[0])
+
+            return {
+                ...team,
+                bans: bans_for_team
+            }
         }
     })
+
+    return match_with_bans
 }
 
 /**
@@ -86,12 +126,17 @@ export function addInfoChampionToMatchBans(match, dynamicChamp) {
  * @param {Object} dynamicChamp Object containing an array of champion
  */
 export function addInfoChampionToMathPlayers(match, dynamicChamp) {
-    match.participants.map(participant => {
-        dynamicChamp.champions.map(champ => {
+    const match_with_played_champ_info = match.participants.map(participant => {
+        return dynamicChamp.map(champ => {
             if (participant.championId === champ.id) {
-                participant.champion = champ
+                return {
+                    ...participant,
+                    champion: champ
+                }
             }
-        })
-    })
+        }).filter(e => e !== undefined)
+    }).map(e => e[0])
+
+    return match_with_played_champ_info
 }
 

@@ -4,7 +4,7 @@
   "description": "riot api using graphql",
   "main": "server.js",
   "scripts": {
-    "dev": "nodejs-dashboard babel-node server.js",
+    "dev": "nodejs-dashboard babel-watch server.js",
     "build": "babel server.js && babel graphql-utils -d dist/graphql-utils",
     "start": "node dist/server.js"
   },

@@ -1,125 +1,12 @@
 import fetch from 'node-fetch'
 import fs from 'fs'
 import path from 'path'
-import { formatChampion, addInfoToChampion, addInfoChampionToMatchBans, addInfoChampionToMathPlayers } from './helpers/utils'
+import { getSummonerData, getMatches, getMatch } from './helpers/riot-api'
 
 const Query = {
-    summoner: async (_, { name }, ctx) => {
-        const res = await fetch(`https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${name}?${ctx.key}`)
-        const summoner = await res.json()
-        
-        const resChampionsMastery = await fetch(`https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summoner.id}?${ctx.key}`)
-        const championMastery = await resChampionsMastery.json()
-
-        if(ctx.request.body.query.match('matches')){
-            // TODO: implement all matches and match search
-            const formatedChamp = formatChampion(false)
-            const dynamicChampionsInfo = formatChampion(true)
-            const { keys, champions } = formatedChamp
-
-            const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matchlists/by-account/${summoner.accountId}?beginIndex=0&endIndex=1&${ctx.key}`)
-            const matches = await res.json()
-
-            const match = await Promise.all(matches.matches.map(async elem => {
-                const matchRes = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${elem.gameId}?${ctx.key}`)
-                const m = await matchRes.json()
-
-                addInfoToChampion(dynamicChampionsInfo, champions, keys, elem)
-                addInfoChampionToMatchBans(m, dynamicChampionsInfo)
-                addInfoChampionToMathPlayers(m, dynamicChampionsInfo)
-
-                elem.match = m
-            }))
-
-            summoner.matches = matches
-        }
-
-        if (championMastery.length >= 1) {
-            const formatedChamp = formatChampion(false)
-            const dynamicChampionsInfo = formatChampion(true)
-            const { keys, champions } = formatedChamp
-
-            championMastery.map(champ => {
-                addInfoToChampion(dynamicChampionsInfo, champions, keys, champ)
-            })
-            
-            summoner.championMastery = championMastery
-        }
-
-        // create a dump of the graphql request for mock_data utilities
-        if(process.env.DEV && summoner) {
-            fs.writeFile(`${process.cwd()}/debug.json`, JSON.stringify(summoner), (err) => {
-                if(err) throw err
-                console.log('> debug file create succesfully')
-            })
-        }
-    
-        return summoner
-    },
-    match: async (_, { game_id }, ctx) => {
-        const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${game_id}?${ctx.key}`)
-        if(res.status !== 200) throw new Error(res.statusText)
-        const match = await res.json()
-        const formatedChamp = formatChampion(false)
-        const dynamicChampionsInfo = formatChampion(true)
-        const { keys, champions } = formatedChamp
-
-        addInfoToChampion(dynamicChampionsInfo, champions, keys)
-        if(match.gameId){
-            addInfoChampionToMatchBans(match, dynamicChampionsInfo)
-            addInfoChampionToMathPlayers(match, dynamicChampionsInfo)
-        }
-        return match
-    },
-    matches: async (_, { summoner_id, start, end, recent }, ctx) => {
-        const formatedChamp = formatChampion(false)
-        const dynamicChampionsInfo = formatChampion(true)
-        const { keys, champions } = formatedChamp
-
-        // TODO: implement start, end and later the filter by champions etc...
-        if(!recent){
-            const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matchlists/by-account/${summoner_id}?${ctx.key}`)
-            const matches = await res.json()
-
-            if(matches.status){
-                throw new Error(`Une erreur est survenue lors de la requete, code : ${matches.status.status_code}`)
-            }
-
-            const match = await Promise.all(matches.matches.map(async elem => {
-                const matchRes = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${elem.gameId}?${ctx.key}`)
-                const m = await matchRes.json()
-                addInfoToChampion(dynamicChampionsInfo, champions, keys, elem)
-                if(m.gameId){
-                    addInfoChampionToMatchBans(m, dynamicChampionsInfo)
-                    addInfoChampionToMathPlayers(m, dynamicChampionsInfo)
-                }
-
-                elem.match = m
-            }))
-
-            return matches
-        }
-
-        const res = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matchlists/by-account/${summoner_id}/recent?${ctx.key}`)
-        const matches = await res.json()
-
-        if(matches.status){
-            throw new Error(`Une erreur est survenue lors de la requete, code : ${matches.status.status_code}`)
-        }
-
-        const match = await Promise.all(matches.matches.map(async elem => {
-            const matchRes = await fetch(`https://euw1.api.riotgames.com/lol/match/v3/matches/${elem.gameId}?${ctx.key}`)
-            const m = await matchRes.json()
-            addInfoToChampion(dynamicChampionsInfo, champions, keys, elem)
-            if(m.gameId){
-                addInfoChampionToMatchBans(m, dynamicChampionsInfo)
-                addInfoChampionToMathPlayers(m, dynamicChampionsInfo)
-            }
-            elem.match = m
-        }))
-
-        return matches
-    }
+    summoner: async (_, { name }, ctx) => await getSummonerData(name, ctx),
+    match: async (_, { game_id }, ctx) => await getMatch(game_id, ctx),
+    matches: async (_, params, ctx) => await getMatches(params, ctx)
 }
 
 export default Query
