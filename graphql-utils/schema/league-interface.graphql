@@ -1,0 +1,20 @@
+interface League {
+    hotStreak: Boolean!
+    wins: Int!
+    veteran: Boolean!
+    miniSeries: MiniSeries
+    losses: Int!
+    playerOrTeamId: Int!
+    playerOrTeamName: String!
+    inactive: Boolean
+    rank: String!
+    freshBlood: Boolean
+    leaguePoints: Int!
+}
+
+type MiniSeries {
+    wins: Int!
+    losses: Int!
+    target: Int!
+    progress: String!
+}

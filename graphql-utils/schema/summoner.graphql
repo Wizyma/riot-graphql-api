@@ -1,6 +1,7 @@
 # import Matches from "./matches.graphql"
 # import Spectator from './spectator.graphql'
 # import ChampionMastery from './summoner-champion-mastery.graphql'
+# import SumLeague from './summoner-league.graphql'
 
 type Summoner {
     profileIconId: ID!
@@ -12,4 +13,5 @@ type Summoner {
     spectator: Spectator
     matches(start: Int, end: Int): Matches
     championMastery: [ChampionMastery]!
+    sumLeague: [SumLeague]!
 }

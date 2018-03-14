@@ -44,6 +44,21 @@ async function formatMatchWithChampionInfo(match_list, key) {
     }))
 }
 
+async function getSummonerLeague(id, key) {
+    const BASE_URL = 'https://euw1.api.riotgames.com/lol'
+
+    const league_url = getUrl(BASE_URL, `league/v3/positions/by-summoner/${id}?${key}`)
+    const league_data = await fetchData(league_url)
+
+    const { leagueId } =  league_data[0]
+
+    const league_info_url = getUrl(BASE_URL, `league/v3/leagues/${leagueId}?${key}`)
+    const league_info_data = await fetchData(league_info_url)
+
+    return [Object.assign({}, league_data[0], { currentLeague: league_info_data })]
+    
+}
+
 
 export async function getSummonerData(name, { key }) {
     const BASE_URL = 'https://euw1.api.riotgames.com/lol'
@@ -54,6 +69,8 @@ export async function getSummonerData(name, { key }) {
 
     const { id, accountId } = summoner
     const { dynamic, keys, champions } = formatStaticData()
+
+    const league_data = await getSummonerLeague(id, key)
 
     // get mastered champions from the summoner, this request returns an array that can be empty
     const mastery_champion_url = getUrl(BASE_URL, `champion-mastery/v3/champion-masteries/by-summoner/${id}?${key}`)
@@ -79,13 +96,15 @@ export async function getSummonerData(name, { key }) {
         return {
             ...summoner,
             championMastery: with_mastery,
-            matches: match_with_info
+            matches: match_with_info,
+            sumLeague: league_data,
         }
     }
 
     return {
         ...summoner,
         matches: match_with_info,
+        sumLeague: league_data,
     }
 }
 

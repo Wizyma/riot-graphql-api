@@ -1,0 +1,24 @@
+# import League from './league-interface.graphql'
+# import MiniSeries from './league-interface.graphql'
+
+type Leagues {
+    tier: String!
+    queue: String!
+    leagueId: String!
+    name: String!
+    entries : [Entries!]!
+}
+
+type Entries implements League {
+    hotStreak: Boolean!
+    wins: Int!
+    veteran: Boolean!
+    miniSeries: MiniSeries
+    losses: Int!
+    playerOrTeamId: Int!
+    playerOrTeamName: String!
+    inactive: Boolean
+    rank: String!
+    freshBlood: Boolean
+    leaguePoints: Int!
+}
