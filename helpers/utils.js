@@ -45,7 +45,7 @@ const folders = ['champions', 'items', 'maps', 'masteries']
  * and create it if not
  */
 async function checkFolderExists() {
-    const data_path = path.join(process.cwd(), '/static-data')
+    const data_path = path.resolve(path.join(__dirname, '../static-data/'))
 
     folders.map(folder => {
         fs.stat(`${data_path}/${folder}`, (err, stats) => {
@@ -67,7 +67,7 @@ function updateChampions() {
     rule.hour = 6
     const job = schedule.scheduleJob(rule, async () => {
         console.log('> the update job started.')
-        const data_path = path.join(process.cwd(), `/static-data`)
+        const data_path = path.resolve(path.join(__dirname, '../static-data/'))
 
         const res = await fetch(`https://euw1.api.riotgames.com/lol/platform/v3/champions?freeToPlay=false&${process.env.API_KEY}`)
         const data = await res.json()
@@ -83,7 +83,7 @@ function updateChampions() {
 }
 
 function getDynamicInfo() {
-    const data_path = path.join(process.cwd(), `/static-data`)
+    const data_path = path.resolve(path.join(__dirname, '../static-data/'))
 
     fs.stat(`${data_path}/champions/champions_dynamic_fr_FR.json`, async (err, stats) => {
         if(err && err.errno === -2){
@@ -112,7 +112,7 @@ function getStaticFiles() {
     updateChampions()
 
     folders.map(folder => {
-        const data_path = path.join(process.cwd(), `/static-data/${folder}`)
+        const data_path = path.resolve(path.join(__dirname, `../static-data/${folder}`))
         fs.readFile(`${data_path}/${folder}_fr_FR.json`, async (err, data) => {
             const options = {
                 api_key: process.env.API_KEY,

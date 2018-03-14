@@ -24,4 +24,11 @@ if (process.env.DEV) {
     server.use(morgan('dev'))
 }
 
+server.use('*', (req, res, next) => {
+    if (req.method === 'GET' && req.originalUrl !== '/playground') {
+        return res.redirect('/playground')
+    }
+    next()
+})
+
 server.start(options, ({ port }) => console.log(`> Server started, listening on port ${port} for incoming requests.`) || getStaticFiles())

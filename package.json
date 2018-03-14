@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodejs-dashboard babel-watch server.js",
-    "build": "babel server.js && babel graphql-utils -d dist/graphql-utils",
+    "build": "babel server.js -d dist/ && babel riot-url.js -d dist && babel helpers -d dist/helpers && babel graphql-utils -d dist/graphql-utils && cp .env dist/ && cd dist/ && mkdir static-data",
     "start": "node dist/server.js"
   },
   "keywords": [
@@ -30,5 +30,13 @@
     "babel-preset-env": "^1.6.1",
     "morgan": "^1.9.0",
     "nodejs-dashboard": "^0.4.3"
+  },
+  "engines": {
+    "node": "9.8.0"
+  },
+  "now": {
+    "engines": {
+      "node": "9.8.0"
+    }
   }
 }
