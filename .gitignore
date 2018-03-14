@@ -66,3 +66,4 @@ dist/
 static-data/
 debug.json
 graphql-utils/schema.graphql
+now.json
