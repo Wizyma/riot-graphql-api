@@ -1,3 +1,5 @@
+# THIS PROJECT DOESN'T WORK ANYMORE DUE TO CHANGES ON RIOT API. 
+
 # riot-graphql-api
 
 Unofficial Riot API with GraphQL
